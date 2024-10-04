@@ -1,0 +1,35 @@
+'''
+CS5001
+HW4 - Written Questions
+Fall 2024
+Logan Matheny
+'''
+
+## Written #1
+1A:  Will produce an error because `lst[3]` does not exist, it is beyond
+    the range of the list
+- IndexError
+
+
+1B: You cannot 'add' two different types
+- TypeError
+
+
+1C: Same thing as the one before, you cannot add two differ types
+- TypeError 
+
+## Written #2
+2A: This will print all the elements in nested (both the list and the nested lists) so...
+
+3
+4
+5
+8
+9
+10
+
+
+2B: This will just print the two separate lists.
+
+[3, 4, 5]
+[8, 9, 10]
