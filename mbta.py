@@ -18,11 +18,12 @@ def preprocess_data():
     all upper case elements
     Return: List of lists with uppercase elements
     """
-    # I want to iterate thru two shallow copies
-    # Change to uppercase and then append them
+    # Iterate through lines of the list of lines and create a 'holder' list
     for single_line in T_LINES:
         single_t_line = []
 
+        # Iterate through line header and stations and change to uppercase
+        # Append the new line to WORKING_LINES
         for station in single_line:
             single_t_line.append(station.upper())
 
@@ -30,11 +31,16 @@ def preprocess_data():
 
 
 def is_valid_line(line):
-    """ """
+    """
+    Function: Determines if a given line is valid
+    Returns: Boolean if the line is valid in the set
+    >>> is_valid_line("ORANGE")
+    True
+    """
+    # Iterate through lines within the WORKING_LINES constant
+    # If the line is found in a nested string, return true
     for mbta_line in WORKING_LINES:
-        # print(mbta_line)
         if line in mbta_line:
-            # print(line)
             return True
         else:
             continue
@@ -50,11 +56,8 @@ def is_valid_station(station, line):
     True
     """
 
-    # I could make a dictionary of the lines based on the [0] index of
-    # each list?
-    # otherwise I could iterate through once, check the first term for a match
-    # then when a match is found check to see if the station is in there
-
+    # Similar to is_valid_line() just one extra step of once the line is found
+    # You must see if the station is in that particular line list
     for t_line in WORKING_LINES:
         if line in t_line:
             if station in t_line:
@@ -67,8 +70,14 @@ def is_valid_station(station, line):
     return False
 
 
-def check_stops(start, stop):
-    """ """
+def check_same_stop(start, stop):
+    """
+    Function: Takes two stations as arguments and sees if they are
+    the same stop
+    Return: Boolean, NOTE - if True then the stops are different
+    >>> check_same_stop("HAYMARKET", "HAYMARKET")
+    False
+    """
     if start == stop:
         return False
     else:
@@ -77,23 +86,34 @@ def check_stops(start, stop):
 
 def get_num_stops(start, end, line, direction=False):
     """
-    Function: Given three arguments including the number of stops between two stations on
-    a given line (assumes inputs are accurate)
-    Input: two T stations (must be on the same line), strings
-    Returns: number of stops between the two, a positive integer
+    Function: Given two stations, the line, and optional direction as args.
+    will return the number of stops between two stations
+    Additional Notes: If direction is true, it will give either a
+    positive (meaning the train is moving towards end of line) or
+    negative (meaning the train is movine towards start of line) int
+    Returns: number of stops between the two stations
+    >>> get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE")
+    8
     """
-    # determine the line
-    # get the indice for station 1
-    # get the station for station 2
-    # absolute difference between the two
-    if check_stops(start, end):
+    # Check to ensure stops are not the same stop and line/stations valid
+    # Then similar to validating line/stations iterate through list
+    if (
+        check_same_stop(start, end)
+        and is_valid_line(line)
+        and is_valid_station(start, line)
+        and is_valid_station(end, line)
+    ):
         for single_line in WORKING_LINES:
+            # When the correct line is found, index the positions of start/end
+            # Find the difference between index points
             if line in single_line:
                 starting_station = single_line.index(start)
                 ending_station = single_line.index(end)
 
-                stops = ending_station - starting_station 
+                stops = ending_station - starting_station
 
+        # To be used in get_directions, this allows you to return the direction
+        # when desired
         if direction is False:
             return abs(stops)
 
@@ -105,6 +125,11 @@ def get_num_stops(start, end, line, direction=False):
 
 
 def find_line(line):
+    """
+    Function: Helper function to make a copy of a line
+    Returns: A line list or if no line exists it will return a string for
+    debugging
+    """
     for single_line in WORKING_LINES:
         if line in single_line:
             return copy.copy(single_line)
@@ -115,33 +140,32 @@ def find_line(line):
 
 
 def get_direction(start, end, line):
-    """Function get_destination
-    Input: start and end stations (both strings), and a line (string)
-    Returns: the final stop in the direction
-    from start to end (a string)
-
-    Does: Finds the line both stops are on.
-    Counts the number of stops from start to end.
-    If it's negative, return the first station from that
-    line, otherwise return the final station.
-    If the line is invalid or not found, return a string "line not found"
-    If the destination or start is not found, return "no destination found"
+    """
+    Function: Takes starting and ending stations as well as line as
+    arguments. Will be used to help the user get on the right train
+    as trains are usually named with the last stop in a given direction
+    Return: Either strings to the user signifying that no station or line was
+    found OR the name of the stop the user is attempting to head towards with
+    given start, end, and line arguments
+    >>> get_direction("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE")
+    NORTH STATION
     """
 
-    # check that the line is good - if not "line not found"
-    # check that the inputs are good (e.g. the stations are on the given line)
-    # if not "no destination found"
-    # counting
+    # Check that the line is valid and return string if invalid
+    # Check if stations are on the given line if invalid print string
     if is_valid_line(line):
         if is_valid_station(start, line) and is_valid_station(end, line):
+            # Get the number of stops between stations AND DIRECTION
             direction = get_num_stops(start, end, line, True)
 
+            # Make a copy of the list of stations for that line
+            # Based on the direction, return either the first or last stops
+            # on the line
             line = find_line(line)
-            # print(line)
             if direction > 0:
                 return line[-1]
             else:
-                return line[0]
+                return line[1]
 
         else:
             return "no destination found"
@@ -150,11 +174,7 @@ def get_direction(start, end, line):
 
 
 def main():
-    preprocess_data()
-    # print(WORKING_LINES)
-    # print("Is this line valid?", is_valid_line("ORANGE"))
-    print(get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE", True))
-    print(get_direction("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE"))
+    print("HW 4 Completed!")
 
 
 if __name__ == "__main__":
