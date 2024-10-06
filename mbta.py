@@ -29,6 +29,15 @@ def preprocess_data():
         WORKING_LINES.append(single_t_line)
 
 
+def is_valid_line(line):
+    """ """
+    for mbta_line in WORKING_LINES:
+        if line in mbta_line:
+            return True
+        else:
+            return False
+
+
 def is_valid_station(station, line):
     """
     Function: Takes in station and line arguments and assesses if a
@@ -55,8 +64,18 @@ def is_valid_station(station, line):
     return False
 
 
-def get_num_stops(start, end, line):
-    """Function get_num_stops
+def check_stops(start, stop):
+    """ """
+    if start == stop:
+        return False
+    else:
+        return True
+
+
+def get_num_stops(start, end, line, direction=False):
+    """
+    Function: Given three arguments including the number of stops between two stations on
+    a given line (assumes inputs are accurate)
     Input: two T stations (must be on the same line), strings
     Returns: number of stops between the two, a positive integer
     """
@@ -64,14 +83,22 @@ def get_num_stops(start, end, line):
     # get the indice for station 1
     # get the station for station 2
     # absolute difference between the two
-    for single_line in WORKING_LINES:
-        if line in single_line:
-            starting_station = single_line.index(start)
-            ending_station = single_line.index(end)
+    if check_stops(start, end):
+        for single_line in WORKING_LINES:
+            if line in single_line:
+                starting_station = single_line.index(start)
+                ending_station = single_line.index(end)
 
-            stops = abs(starting_station - ending_station)
+                stops = starting_station - ending_station
 
+        if direction == False:
+            return abs(stops)
+
+        elif direction == True:
             return stops
+
+    else:
+        return 0
 
 
 def get_direction(start, end, line):
@@ -88,11 +115,16 @@ def get_direction(start, end, line):
     If the destination or start is not found, return "no destination found"
     """
 
+    # check that the line is good - if not "line not found"
+    # check that the inputs are good (e.g. the stations are on the given line)
+    # if not "no destination found"
+    # counting
+
 
 def main():
     preprocess_data()
     print(WORKING_LINES)
-    print(get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE"))
+    print(get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE", True))
 
 
 if __name__ == "__main__":
