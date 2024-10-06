@@ -9,12 +9,9 @@ import hw4data
 
 # Note the list has ints and strings
 
+    # Goal - make a function that takes the list and then converts it to a decoded version
 
 def decode(data: list) -> list:
-    # Goal - make a function that takes the list and then converts it to a decoded version
-    # count the number of charcaters that are the same
-    # Methods
-    # Pseduo
     # First character and all the odd characters represent the char to create copies of
     # Second and even characters are how many times to print it
     # Look at the first character - save it
@@ -27,12 +24,11 @@ def decode(data: list) -> list:
         secret_num = data[i + 1]
         for j in range(0, secret_num):
             decoded_lst.append(secret_char)
-    print(decoded_lst)
+    return decoded_lst
 
 
 def main():
     decode(hw4data.DATA0)
-
 
 # print(decode(hw4data.DATA0))
 # print(decode(hw4data.DATA1))
