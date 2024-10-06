@@ -60,6 +60,18 @@ def get_num_stops(start, end, line):
     Input: two T stations (must be on the same line), strings
     Returns: number of stops between the two, a positive integer
     """
+    # determine the line
+    # get the indice for station 1
+    # get the station for station 2
+    # absolute difference between the two
+    for single_line in WORKING_LINES:
+        if line in single_line:
+            starting_station = single_line.index(start)
+            ending_station = single_line.index(end)
+
+            stops = abs(starting_station - ending_station)
+
+            return stops
 
 
 def get_direction(start, end, line):
@@ -80,6 +92,7 @@ def get_direction(start, end, line):
 def main():
     preprocess_data()
     print(WORKING_LINES)
+    print(get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE"))
 
 
 if __name__ == "__main__":
