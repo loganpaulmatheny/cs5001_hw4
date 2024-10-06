@@ -13,10 +13,10 @@ WORKING_LINES = mbta_data.WORKING_LINES
 
 
 def preprocess_data():
-    """Function preprocess data
-    Mutate the WORKING_LINES list to create a list of lists with the
-    SAME data as T_LINES, but HOMOGENIZED such that all elements are
-    UPPERCASED
+    """
+    Function: Mutate the WORKING_LINES list to create list with
+    all upper case elements
+    Return: List of lists with uppercase elements
     """
     # I want to iterate thru two shallow copies
     # Change to uppercase and then append them
@@ -30,11 +30,29 @@ def preprocess_data():
 
 
 def is_valid_station(station, line):
-    """Function is_valid_station
-    Input: a T station (string), a T line (string)
-    Returns: boolean
-    Does: Looks for the station in all the lists, returns True if found for the line, False otherwise
     """
+    Function: Takes in station and line arguments and assesses if a
+    given station is on a particular line
+    Return: Boolean based on station's presence on given line
+    >>> is_valid_station(RED, ASHMONT)
+    True
+    """
+
+    # I could make a dictionary of the lines based on the [0] index of
+    # each list?
+    # otherwise I could iterate through once, check the first term for a match
+    # then when a match is found check to see if the station is in there
+
+    for t_line in WORKING_LINES:
+        if line in t_line:
+            if station in t_line:
+                return True
+            else:
+                return False
+        else:
+            continue
+
+    return False
 
 
 def get_num_stops(start, end, line):
