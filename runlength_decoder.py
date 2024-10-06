@@ -9,19 +9,30 @@ import hw4data
 
 # Note the list has ints and strings
 
-    # Goal - make a function that takes the list and then converts it to a decoded version
+# Goal - make a function uses a coded version of chars to create
+# a decoded version
+
 
 def decode(data: list) -> list:
-    # First character and all the odd characters represent the char to create copies of
-    # Second and even characters are how many times to print it
-    # Look at the first character - save it
-    # Read the second character - loop and add saved value to your new decoded list
-    # Add 2 to the counter and repeat
+    """
+    Function: Takes in a list argument of unspecified length and uses
+        it as a code to create a new decoded list
+    Returns: A decoded list of characters
+    >>> decode(coded_list)
+    [P, P, P, Y, Y, T, H, H, O, N, N]
+
+    """
+    # Generate list to 'hold' characters
     decoded_lst = []
 
+    # Create loop that will
+    # Go through length of 'coded' data
+    # Identify the letter and number of times to be printed
     for i in range(0, len(data), 2):
         secret_char = data[i]
         secret_num = data[i + 1]
+
+        # Loop through and append char to the decoded list
         for j in range(0, secret_num):
             decoded_lst.append(secret_char)
     return decoded_lst
@@ -29,6 +40,7 @@ def decode(data: list) -> list:
 
 def main():
     decode(hw4data.DATA0)
+
 
 # print(decode(hw4data.DATA0))
 # print(decode(hw4data.DATA1))
