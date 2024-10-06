@@ -32,10 +32,13 @@ def preprocess_data():
 def is_valid_line(line):
     """ """
     for mbta_line in WORKING_LINES:
+        # print(mbta_line)
         if line in mbta_line:
+            # print(line)
             return True
         else:
-            return False
+            continue
+    return False
 
 
 def is_valid_station(station, line):
@@ -89,16 +92,26 @@ def get_num_stops(start, end, line, direction=False):
                 starting_station = single_line.index(start)
                 ending_station = single_line.index(end)
 
-                stops = starting_station - ending_station
+                stops = ending_station - starting_station 
 
-        if direction == False:
+        if direction is False:
             return abs(stops)
 
-        elif direction == True:
+        elif direction:
             return stops
 
     else:
         return 0
+
+
+def find_line(line):
+    for single_line in WORKING_LINES:
+        if line in single_line:
+            return copy.copy(single_line)
+
+        else:
+            continue
+    return "didn't find that line"
 
 
 def get_direction(start, end, line):
@@ -119,12 +132,29 @@ def get_direction(start, end, line):
     # check that the inputs are good (e.g. the stations are on the given line)
     # if not "no destination found"
     # counting
+    if is_valid_line(line):
+        if is_valid_station(start, line) and is_valid_station(end, line):
+            direction = get_num_stops(start, end, line, True)
+
+            line = find_line(line)
+            # print(line)
+            if direction > 0:
+                return line[-1]
+            else:
+                return line[0]
+
+        else:
+            return "no destination found"
+    else:
+        return "line not found"
 
 
 def main():
     preprocess_data()
-    print(WORKING_LINES)
+    # print(WORKING_LINES)
+    # print("Is this line valid?", is_valid_line("ORANGE"))
     print(get_num_stops("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE", True))
+    print(get_direction("STONY BROOK", "DOWNTOWN CROSSING", "ORANGE"))
 
 
 if __name__ == "__main__":
